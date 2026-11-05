@@ -246,6 +246,48 @@ table.rec td.now{color:var(--blue-d)}
 .vb.on{background:var(--blue);color:#fff}
 .musicbtn{position:fixed;right:10px;bottom:10px;z-index:70;width:52px;height:52px;border-radius:50%;border:0;background:#fff;font-size:26px;box-shadow:0 4px 0 #c7cbe0;cursor:pointer}
 @media (max-width:420px){.opt{min-height:125px}.opt .txt{font-size:76px}.title{font-size:32px}.pill{font-size:20px;padding:5px 12px}.pill.money{font-size:24px}.cartbtn img{width:38px;height:38px}}
+
+/* ===== fit the whole screen, no scrolling (tablets in landscape too) ===== */
+#sPlay,#sEnd{height:100vh;height:100dvh;min-height:0;max-width:1180px;padding:10px 16px}
+#sPlay .bar{flex:none;margin-bottom:6px}
+#sPlay .q{min-height:0;gap:8px}
+.qtop{flex:none}
+.mybuddy{width:min(140px,15vh);height:min(140px,15vh)}
+.speaker{width:min(120px,14vh);height:min(120px,14vh);flex:none}
+.speaker img{width:70%;height:70%}
+.vis{flex:none}
+.vis img{width:min(84px,9vh);height:min(84px,9vh)}
+.hint{flex:none;min-height:0;font-size:min(24px,3.4vh)}
+.opts{flex:1;min-height:0;grid-template-rows:1fr 1fr}
+.opt{min-height:0;overflow:hidden;padding:6px}
+.opt>img{width:100%;height:100%;max-width:none;aspect-ratio:auto;object-fit:contain}
+.opt .pic{height:100%;min-height:0;justify-content:center}
+.opt .pic img{flex:1;min-height:0;width:100%;max-width:none;aspect-ratio:auto;object-fit:contain}
+.opt .lbl{flex:none;font-size:min(34px,4.4vh);margin-top:2px}
+.opt .txt{font-size:min(96px,13vh)}
+#modal .box{max-height:calc(100dvh - 30px);overflow:hidden}
+#modal .ans img,#modal .ans .pic img{width:min(220px,32vh);height:min(220px,32vh)}
+#modal .ans .txt{font-size:min(150px,26vh)}
+#shopPop .panel{max-height:calc(100dvh - 100px);overflow-y:auto}
+#sEnd{gap:4px;overflow-y:auto}
+#sEnd .title{font-size:min(40px,6vh);margin:4px 0 0}
+#sEnd .big{font-size:min(56px,8vh)}
+#sEnd .sub{margin:0 0 4px;font-size:min(22px,3.4vh)}
+#sEnd .restitle{font-size:min(22px,3.4vh);margin:4px 0 0}
+#sEnd table{font-size:min(24px,3.6vh);border-spacing:0 6px}
+#sEnd td{padding:min(10px,1.4vh) 14px}
+#sEnd #again{flex:none;margin-top:8px!important;padding:min(16px,2.4vh) 22px}
+.endgrid{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0}
+@media (orientation:landscape){
+  .opts{grid-template-columns:repeat(4,1fr);grid-template-rows:1fr}
+  .opt .txt{font-size:min(110px,20vh)}
+  .endgrid{flex-direction:row;gap:24px;align-items:flex-start}
+  .endL,.endR{flex:1;min-width:0}
+  .endL .big,.endL .sub{text-align:left}
+}
+.fsbtn{right:70px;font-size:24px}
+#volBox{right:130px}
+.vis img.numpic{width:min(170px,22vh);height:min(170px,22vh)}
 </style>
 </head>
 <body>
@@ -360,12 +402,18 @@ table.rec td.now{color:var(--blue-d)}
 
 <div id="sEnd" class="screen">
   <div class="title">Time's up! 🎉</div>
-  <p class="big" id="final">$0</p>
-  <p class="sub" id="stats"></p>
-  <div class="restitle">🎮 This game</div>
-  <table class="res"><tbody id="board"><tr><td colspan="3">Loading…</td></tr></tbody></table>
-  <div class="restitle">🏆 Records</div>
-  <table class="res rec"><thead><tr><th></th><th>Best</th><th>This time</th></tr></thead><tbody id="records"></tbody></table>
+  <div class="endgrid">
+    <div class="endL">
+      <p class="big" id="final">$0</p>
+      <p class="sub" id="stats"></p>
+      <div class="restitle">🎮 This game</div>
+      <table class="res"><tbody id="board"><tr><td colspan="3">Loading…</td></tr></tbody></table>
+    </div>
+    <div class="endR">
+      <div class="restitle">🏆 Records</div>
+      <table class="res rec"><thead><tr><th></th><th>Best</th><th>This time</th></tr></thead><tbody id="records"></tbody></table>
+    </div>
+  </div>
   <button class="btn green" id="again" style="margin-top:18px">Play again</button>
 </div>
 
@@ -376,13 +424,14 @@ table.rec td.now{color:var(--blue-d)}
 </div></div>
 
 <button class="musicbtn" id="musicBtn" aria-label="Music volume">🎵</button>
+<button class="musicbtn fsbtn" id="fsBtn" aria-label="Full screen">⛶</button>
 <div id="volBox"><button class="vb" data-v="0">🔇 0%</button><button class="vb" data-v="3">3%</button><button class="vb" data-v="5">5%</button><button class="vb" data-v="10">10%</button></div>
 
 <script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";window.STUDENTS=["正宇", "長欣", "長恩"];window.SCRIPT={"正宇":"T","長欣":"S","長恩":"S"};
 (function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js"><\/script>');})();</script>
-<script src="assets.js"></script>
-<script src="avatars.js"></script>
+document.write('<script src="sets/'+s+'.js?v=202611051419"><\/script>');})();</script>
+<script src="assets.js?v=202611051419"></script>
+<script src="avatars.js?v=202611051419"></script>
 
 <script>
 (function(){
@@ -476,7 +525,13 @@ STUDENTS.forEach(function(n,i){var b=document.createElement('button');b.classNam
 $('backName').onclick=function(){show('sName')};
 /* music starts at the first tap on the first screen (tablets block sound until the child taps) */
 var musicStarted=false;
-function startMusic(){if(musicStarted)return;musicStarted=true;if(musicOn)safePlay(bgm)}
+/* full screen: hides the browser's tab bar and address bar (Android Chrome); turns on at the first tap */
+function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement}
+function goFull(){var d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(f&&!fsEl()){try{var p=f.call(d);if(p&&p.catch)p.catch(function(){})}catch(e){}}}
+var fsTried=false;
+function startMusic(){if(!fsTried){fsTried=true;goFull()}if(musicStarted)return;musicStarted=true;if(musicOn)safePlay(bgm)}
+$('fsBtn').onclick=function(e){e.stopPropagation();if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else goFull()};
+if(!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen))$('fsBtn').style.display='none';
 document.addEventListener('pointerdown',startMusic,true);document.addEventListener('keydown',startMusic,true);
 /* music volume: tap 🎵 to choose 0% / 3% / 5% / 10% (default 5%); remembered on this tablet */
 (function(){var LEVELS=[0,3,5,10],v=5;try{var sv=localStorage.getItem('cq_vol2');if(sv!==null&&LEVELS.indexOf(+sv)>=0)v=+sv}catch(e){}
@@ -612,11 +667,16 @@ function next(){
   current=queue.shift();locked=false;mustPick=false;$('hint').textContent='';
   var vis=$('vis');vis.innerHTML='';vis.classList.remove('on');
   var opts;
-  if(current.kind==='count'||current.kind==='math'){
-    // answer is a number 一~五; the picture shows what to count
+  current._ansAudio=null;
+  if(current.kind==='count'||current.kind==='math'||current.kind==='num'){
+    // answer is a number 一~五; the picture shows what to count (or which number)
     var n;
-    if(current.kind==='count'){n=1+Math.floor(Math.random()*5);for(var i=0;i<n;i++)vis.appendChild(pic(current.img));}
+    if(current.kind==='count'){
+      var ns=current.counts||[1,2,3,4,5];n=ns[Math.floor(Math.random()*ns.length)];
+      for(var i=0;i<n;i++)vis.appendChild(pic(current.img));}
+    else if(current.kind==='num'){n=1+Math.floor(Math.random()*5);var big=pic(current.imgs[n]);big.className='numpic';vis.appendChild(big);}
     else{n=current.ans;drawMath(vis,current);}
+    if(current.ansAudio&&current.ansAudio[n])current._ansAudio=current.ansAudio[n];
     vis.classList.add('on');current._ans=NUM[n-1];
     var wrongs=shuffle(NUM.split('').filter(function(c){return c!==current._ans})).slice(0,3);
     opts=shuffle(wrongs.map(function(c){return {text:c,correct:false}}).concat([{text:current._ans,correct:true}]));
@@ -664,14 +724,18 @@ function answer(o,el){
     var gain=MPQ[st.mpq][0]+STK[st.stk][0]*(st.streak-1);
     st.money+=gain;tick();
     el.classList.add('good');celebrate(el,gain);buddy('jump');
-    setTimeout(next,1400);
+    if(current._ansAudio){ // say the answer, e.g. 「三本書」「二號球衣」
+      cash.volume=0.35;try{voice.pause();voice.src=current._ansAudio;voice.currentTime=0}catch(e){}safePlay(voice);
+      var waited=false,go=function(){if(waited)return;waited=true;cash.volume=1;setTimeout(next,350)};
+      voice.onended=function(){$('speak').classList.remove('playing');go()};setTimeout(go,3500);
+    }else setTimeout(next,1400);
   }else{
     st.streak=0;tick();wrong(el);buddy('sad');
   }
 }
 function celebrate(el,gain){
   var gf=$('greenFlash');gf.classList.remove('on');void gf.offsetWidth;gf.classList.add('on');
-  try{voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
+  try{if(!current._ansAudio)voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
   var m=$('money');m.classList.remove('bump');void m.offsetWidth;m.classList.add('bump');
   var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/3;
   var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmt(gain);f.style.left=cx+'px';f.style.top=cy+'px';document.body.appendChild(f);
@@ -686,7 +750,8 @@ function wrong(el){
   el.classList.add('out');
   var a=$('modalAns');a.innerHTML='';a.appendChild(face(answerFace()));
   var bar=$('modalBar');bar.classList.remove('run');void bar.offsetWidth;bar.classList.add('run');
-  $('modal').classList.add('on');play();
+  $('modal').classList.add('on');
+  if(current._ansAudio){try{voice.pause();voice.src=current._ansAudio;voice.currentTime=0}catch(e){}safePlay(voice)}else play();
   setTimeout(function(){$('modal').classList.remove('on');mustPick=true;locked=false;$('hint').textContent='👆 Tap the right answer!'},2000);
 }
 
