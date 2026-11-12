@@ -255,7 +255,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 @keyframes jump{30%{transform:translateY(-34px) scale(1.12)}60%{transform:translateY(0)}80%{transform:translateY(-10px)}}
 .mybuddy.sad{animation:sad .6s}
 @keyframes sad{20%,60%{transform:rotate(-12deg)}40%,80%{transform:rotate(12deg)}}
-@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.floatmoney{font-size:38px}.register{height:80px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
+@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.register{height:80px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
 @media (max-width:420px){.cnt img{height:60px}}
 .vis{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;background:#fff;border-radius:24px;padding:10px 14px;max-width:100%;box-shadow:0 6px 0 rgba(31,37,68,.08)}
 .vis.on{display:flex}
@@ -477,11 +477,11 @@ table.rec td.now{color:var(--blue-d)}
 
 <script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";
 (function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js?v=202611111903"><\/script>');})();</script>
-<script src="assets.js?v=202611111903"></script>
+document.write('<script src="sets/'+s+'.js?v=202611111917"><\/script>');})();</script>
+<script src="assets.js?v=202611111917"></script>
 <script>(function(){var G=[{"months": [], "file": "avatars_default.js"}],q=parseInt(new URLSearchParams(location.search).get('month')||'',10),mo=(q>=1&&q<=12)?q:new Date().getMonth()+1,f=null;
 G.forEach(function(g){if(g.months.indexOf(mo)>=0)f=f||g.file});if(!f)G.forEach(function(g){if(!g.months.length)f=f||g.file});f=f||G[0].file;
-document.write('<script src="'+f+'?v=202611111903"><\/script>');})();</script>
+document.write('<script src="'+f+'?v=202611111917"><\/script>');})();</script>
 
 <script>
 (function(){
@@ -877,14 +877,14 @@ function answer(o,el){
   }
 }
 /* correct answer: bills and coins fly from the card into the cash register next to the buddy */
-function cashToRegister(card){ // starts from the top edge of the card, away from the green +$ number
+function cashToRegister(cx,cy){
   var reg=$('registerImg'),P=UI.money||[];
   if(!reg.offsetWidth||!P.length||!document.body.animate)return;
   var r=reg.getBoundingClientRect(),tx=r.left+r.width*.5,ty=r.top+r.height*.4,small=window.innerWidth<560;
   for(var i=0;i<6;i++)(function(i){
     var p=P[i%P.length],big=/bill/.test(p.k),sz=(big?40:26)*(small?.8:1);
     var im=document.createElement('img');im.className='cashfly';im.src=p.d;im.style.width=sz+'px';im.style.opacity='0';document.body.appendChild(im);
-    var x0=card.left+card.width*(i%2?.82+.1*Math.random():.08+.1*Math.random()),y0=card.top+8,bend=(Math.random()*160-80),r0=Math.random()*360,spin=(Math.random()<.5?-1:1)*(240+Math.random()*240),kf=[];
+    var x0=cx+(Math.random()*120-60),y0=cy-Math.random()*20,bend=(Math.random()*160-80),r0=Math.random()*360,spin=(Math.random()<.5?-1:1)*(240+Math.random()*240),kf=[];
     for(var k=0;k<=10;k++){var t=k/10,e=t*t*(3-2*t),x=x0+(tx-x0)*e+bend*Math.sin(t*Math.PI),y=y0+(ty-y0)*e-40*Math.sin(t*Math.PI);
       var sc=t<.15?.5+t/.15*.5:(t>.75?1-(t-.75)/.25*.75:1);
       kf.push({transform:'translate('+(x-sz/2)+'px,'+(y-sz/2)+'px) rotate('+(r0+spin*t)+'deg) scale('+sc+')',opacity:t<.08?t/.08:(t>.9?(1-t)/.1:1)})}
@@ -892,27 +892,14 @@ function cashToRegister(card){ // starts from the top edge of the card, away fro
     a.onfinish=function(){im.remove();reg.classList.remove('chomp');void reg.offsetWidth;reg.classList.add('chomp')};
   })(i);
 }
-// top of what is actually drawn inside a card (picture, emoji or words), so the +$ number can sit above it
-function contentTop(el){
-  var t=null;
-  el.querySelectorAll('img').forEach(function(im){if(!im.naturalWidth)return;var ir=im.getBoundingClientRect();if(!ir.height)return;
-    var k=Math.min(ir.width/im.naturalWidth,ir.height/im.naturalHeight),y=ir.top+(ir.height-im.naturalHeight*k)/2;if(t==null||y<t)t=y});
-  var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),n;
-  while((n=w.nextNode())){if(!n.nodeValue.trim())continue;var rg=document.createRange();rg.selectNodeContents(n);var rr=rg.getBoundingClientRect();if(rr.height&&(t==null||rr.top<t))t=rr.top}
-  return t;
-}
 function celebrate(el,gain){
   var gf=$('greenFlash');gf.classList.remove('on');void gf.offsetWidth;gf.classList.add('on');
   try{if(!current._ansAudio)voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
   var m=$('money');m.classList.remove('bump');void m.offsetWidth;m.classList.add('bump');
-  var r=el.getBoundingClientRect(),cx=r.left+r.width/2;
-  var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmtFull(gain);f.style.top='-999px';document.body.appendChild(f);
-  var fw=f.offsetWidth*1.25/2+8,fh=f.offsetHeight;f.style.left=Math.max(fw,Math.min(window.innerWidth-fw,cx))+'px'; // keep the whole number on screen
-  // put the number in the empty space above the picture, never on top of it; if there is no room, just above the card
-  var top=null,picTop=contentTop(el);
-  if(picTop!=null&&picTop-r.top>=fh+10)top=r.top+(picTop-r.top-fh)/2;
-  f.style.top=(top!=null?top:Math.max(4,r.top-fh-4))+'px';
-  cashToRegister(r);
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/3;
+  var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmtFull(gain);f.style.top=cy+'px';document.body.appendChild(f);
+  var fw=f.offsetWidth*1.25/2+8;f.style.left=Math.max(fw,Math.min(window.innerWidth-fw,cx))+'px'; // keep the whole number on screen
+  cashToRegister(cx,cy-24); // bills and coins start just above the green number
   setTimeout(function(){f.remove()},1600);
 }
 function wrong(el){
