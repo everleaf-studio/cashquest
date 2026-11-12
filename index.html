@@ -27,6 +27,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
   radial-gradient(circle at 85% 12%,rgba(255,255,255,.3) 0 60px,transparent 61px),
   radial-gradient(circle at 75% 85%,rgba(255,255,255,.25) 0 80px,transparent 81px),
   radial-gradient(circle at 20% 80%,rgba(255,255,255,.22) 0 50px,transparent 51px)}
+.cashfly{position:fixed;left:0;top:0;z-index:49;pointer-events:none;will-change:transform,opacity;filter:drop-shadow(0 4px 4px rgba(0,0,0,.18))}
+.register{height:110px;width:auto;flex:none;margin-left:-18px;align-self:flex-end;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2))}
+.register.chomp{animation:chomp .35s ease-out}
+@keyframes chomp{0%{transform:scale(1)}40%{transform:scale(1.12,.92)}100%{transform:scale(1)}}
 .screen{display:none;position:relative;width:100%;max-width:760px;padding:16px;flex-direction:column;min-height:100vh}
 .screen.on{display:flex}
 .title{font-size:40px;font-weight:800;text-align:center;margin:12px 0 2px;color:#fff;text-shadow:0 4px 0 var(--blue-d),0 6px 14px rgba(0,0,0,.25);line-height:1.1}
@@ -251,7 +255,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 @keyframes jump{30%{transform:translateY(-34px) scale(1.12)}60%{transform:translateY(0)}80%{transform:translateY(-10px)}}
 .mybuddy.sad{animation:sad .6s}
 @keyframes sad{20%,60%{transform:rotate(-12deg)}40%,80%{transform:rotate(12deg)}}
-@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
+@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.register{height:80px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
 @media (max-width:420px){.cnt img{height:60px}}
 .vis{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;background:#fff;border-radius:24px;padding:10px 14px;max-width:100%;box-shadow:0 6px 0 rgba(31,37,68,.08)}
 .vis.on{display:flex}
@@ -295,6 +299,7 @@ table.rec td.now{color:var(--blue-d)}
 #sPlay .q{min-height:0;gap:8px}
 .qtop{flex:none}
 .mybuddy{width:min(140px,15vh);height:min(140px,15vh)}
+.register{height:min(105px,11vh)}
 .speaker{width:min(120px,14vh);height:min(120px,14vh);flex:none}
 .speaker img{width:70%;height:70%}
 .vis{flex:none}
@@ -383,7 +388,7 @@ table.rec td.now{color:var(--blue-d)}
     <button class="iconbtn cartbtn" id="shopBtn"><img id="cartImg" alt="">Shop</button>
   </div>
   <div class="q">
-    <div class="qtop"><div class="mybuddy" id="myBuddy"></div><button class="speaker" id="speak" aria-label="Play sound"><img id="speakerImg" alt=""></button></div>
+    <div class="qtop"><div class="mybuddy" id="myBuddy"></div><img class="register" id="registerImg" alt=""><button class="speaker" id="speak" aria-label="Play sound"><img id="speakerImg" alt=""></button></div>
     <div class="vis" id="vis"></div>
     <div class="hint" id="hint"></div>
     <div class="opts" id="opts"></div>
@@ -472,11 +477,11 @@ table.rec td.now{color:var(--blue-d)}
 
 <script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";
 (function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js?v=202611111735"><\/script>');})();</script>
-<script src="assets.js?v=202611111735"></script>
+document.write('<script src="sets/'+s+'.js?v=202611111838"><\/script>');})();</script>
+<script src="assets.js?v=202611111838"></script>
 <script>(function(){var G=[{"months": [], "file": "avatars_default.js"}],q=parseInt(new URLSearchParams(location.search).get('month')||'',10),mo=(q>=1&&q<=12)?q:new Date().getMonth()+1,f=null;
 G.forEach(function(g){if(g.months.indexOf(mo)>=0)f=f||g.file});if(!f)G.forEach(function(g){if(!g.months.length)f=f||g.file});f=f||G[0].file;
-document.write('<script src="'+f+'?v=202611111735"><\/script>');})();</script>
+document.write('<script src="'+f+'?v=202611111838"><\/script>');})();</script>
 
 <script>
 (function(){
@@ -573,6 +578,7 @@ var LOCAL=(function(){ // single-device stand-in; ?bots=1 or 2 adds pretend clas
 })();
 
 /* ---------- static UI ---------- */
+if(UI.register)$('registerImg').src=UI.register;else $('registerImg').style.display='none';
 ['speakerImg','cartImg','shop1','shop2','shop3'].forEach(function(id){var k={speakerImg:'speaker',cartImg:'cart',shop1:'shop1',shop2:'shop2',shop3:'shop3'}[id];if(UI[k])$(id).src=UI[k];else $(id).style.display='none'});
 $('setTitle').textContent=SET.title;$('mins').textContent=GAME_MIN;
 /* name screen: the child types a name (remembered on this tablet) and picks 繁體 or 简体 */
@@ -870,6 +876,22 @@ function answer(o,el){
     st.streak=0;tick();wrong(el);buddy('sad');
   }
 }
+/* correct answer: bills and coins fly from the card into the cash register next to the buddy */
+function cashToRegister(cx,cy){
+  var reg=$('registerImg'),P=UI.money||[];
+  if(!reg.offsetWidth||!P.length||!document.body.animate)return;
+  var r=reg.getBoundingClientRect(),tx=r.left+r.width*.5,ty=r.top+r.height*.4,small=window.innerWidth<560;
+  for(var i=0;i<6;i++)(function(i){
+    var p=P[i%P.length],big=/bill/.test(p.k),sz=(big?58:36)*(small?.75:1);
+    var im=document.createElement('img');im.className='cashfly';im.src=p.d;im.style.width=sz+'px';im.style.opacity='0';document.body.appendChild(im);
+    var x0=cx+(Math.random()*120-60),y0=cy+(Math.random()*60-30),bend=(Math.random()*160-80),r0=Math.random()*360,spin=(Math.random()<.5?-1:1)*(240+Math.random()*240),kf=[];
+    for(var k=0;k<=10;k++){var t=k/10,e=t*t*(3-2*t),x=x0+(tx-x0)*e+bend*Math.sin(t*Math.PI),y=y0+(ty-y0)*e-40*Math.sin(t*Math.PI);
+      var sc=t<.15?.5+t/.15*.6:(t>.75?1.1-(t-.75)/.25*.85:1.1);
+      kf.push({transform:'translate('+(x-sz/2)+'px,'+(y-sz/2)+'px) rotate('+(r0+spin*t)+'deg) scale('+sc+')',opacity:t<.08?t/.08:(t>.9?(1-t)/.1:1)})}
+    var a=im.animate(kf,{duration:900,delay:i*90,easing:'linear',fill:'both'});
+    a.onfinish=function(){im.remove();reg.classList.remove('chomp');void reg.offsetWidth;reg.classList.add('chomp')};
+  })(i);
+}
 function celebrate(el,gain){
   var gf=$('greenFlash');gf.classList.remove('on');void gf.offsetWidth;gf.classList.add('on');
   try{if(!current._ansAudio)voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
@@ -877,11 +899,7 @@ function celebrate(el,gain){
   var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/3;
   var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmtFull(gain);f.style.top=cy+'px';document.body.appendChild(f);
   var fw=f.offsetWidth*1.25/2+8;f.style.left=Math.max(fw,Math.min(window.innerWidth-fw,cx))+'px'; // keep the whole number on screen
-  var mr=m.getBoundingClientRect();
-  for(var i=0;i<6;i++){var c=document.createElement('div');c.className='coin';c.textContent='🪙';
-    c.style.left=(cx-15+(Math.random()*60-30))+'px';c.style.top=(cy+(Math.random()*40-20))+'px';
-    c.style.setProperty('--dx',(mr.left+mr.width/2-cx)+'px');c.style.setProperty('--dy',(mr.top-cy)+'px');
-    c.style.animationDelay=(i*0.07)+'s';document.body.appendChild(c);(function(c){setTimeout(function(){c.remove()},1300)})(c)}
+  cashToRegister(cx,cy);
   setTimeout(function(){f.remove()},1600);
 }
 function wrong(el){
