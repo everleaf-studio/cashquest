@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cash Quest">
+<link rel="manifest" href="manifest.json">
 <title>Cash Quest</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
@@ -22,6 +27,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
   radial-gradient(circle at 85% 12%,rgba(255,255,255,.3) 0 60px,transparent 61px),
   radial-gradient(circle at 75% 85%,rgba(255,255,255,.25) 0 80px,transparent 81px),
   radial-gradient(circle at 20% 80%,rgba(255,255,255,.22) 0 50px,transparent 51px)}
+.cashfly{position:fixed;left:0;top:0;z-index:49;pointer-events:none;will-change:transform,opacity;filter:drop-shadow(0 4px 4px rgba(0,0,0,.18))}
+.register{height:110px;width:auto;flex:none;margin-left:-18px;align-self:flex-end;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2))}
+.register.chomp{animation:chomp .35s ease-out}
+@keyframes chomp{0%{transform:scale(1)}40%{transform:scale(1.12,.92)}100%{transform:scale(1)}}
 .screen{display:none;position:relative;width:100%;max-width:760px;padding:16px;flex-direction:column;min-height:100vh}
 .screen.on{display:flex}
 .title{font-size:40px;font-weight:800;text-align:center;margin:12px 0 2px;color:#fff;text-shadow:0 4px 0 var(--blue-d),0 6px 14px rgba(0,0,0,.25);line-height:1.1}
@@ -37,14 +46,22 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 .btn.pink:active{box-shadow:0 2px 0 var(--pink-d)}
 .btn.white{background:#fff;color:var(--ink);box-shadow:0 7px 0 #c7cbe0,0 10px 18px rgba(0,0,0,.15)}
 .btn:disabled{filter:grayscale(.7);opacity:.6;cursor:default}
-.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:8px}
-.names .btn{font-size:30px;padding:26px 12px}
+.namebox{display:flex;flex-direction:column;gap:16px;max-width:520px;width:100%;margin:6px auto 0}
+#nameIn{font:800 38px/1.2 "Baloo 2","Noto Sans TC","Noto Sans SC",sans-serif;text-align:center;padding:14px 16px;border:4px solid #c7d2fe;border-radius:22px;outline:none;color:var(--ink);width:100%;user-select:text;-webkit-user-select:text}
+#nameIn:focus{border-color:var(--blue)}
+.scriptpick{display:flex;align-items:center;justify-content:center;gap:10px;font-size:22px;font-weight:800}
+.sp{border:0;border-radius:99px;padding:8px 20px;font:800 24px/1.2 "Noto Sans TC","Noto Sans SC",sans-serif;background:#e2e8f0;color:var(--ink);cursor:pointer}
+.sp.on{background:var(--blue);color:#fff}
+.namebox .btn{font-size:32px;padding:20px}
 .panel{background:rgba(255,255,255,.92);border-radius:28px;padding:22px;box-shadow:0 10px 30px rgba(31,37,68,.18)}
 /* top bar */
 .bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .pill{background:#fff;border-radius:999px;padding:6px 16px;font-size:24px;font-weight:800;white-space:nowrap;box-shadow:0 4px 0 #c7cbe0}
 .pill.money{color:var(--green-d);font-size:30px;position:relative}
 .pill.money.bump{animation:bump .45s}
+.pill.money.long{font-size:24px}
+.pill.money.xlong{font-size:19px}
+@media (max-width:420px){.pill.money.long{font-size:19px}.pill.money.xlong{font-size:15px}}
 @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.28);background:#dcfce7}100%{transform:scale(1)}}
 .pill.time.low{color:var(--red);animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.5}}
@@ -71,8 +88,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 #greenFlash{position:fixed;inset:0;background:radial-gradient(circle,rgba(34,197,94,.0) 30%,rgba(34,197,94,.55) 100%);pointer-events:none;opacity:0;z-index:40}
 #greenFlash.on{animation:gf .7s}
 @keyframes gf{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
-.floatmoney{position:fixed;z-index:50;font:800 44px/1 "Baloo 2";color:var(--green-d);text-shadow:0 3px 0 #fff,0 0 12px #fff;pointer-events:none;animation:up 1.1s ease-out forwards}
-@keyframes up{0%{transform:translate(-50%,0) scale(.6);opacity:0}15%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{transform:translate(-50%,-140px) scale(1);opacity:0}}
+.floatmoney{position:fixed;z-index:50;font:800 56px/1 "Baloo 2";color:var(--green-d);text-shadow:0 3px 0 #fff,0 0 14px #fff,0 0 4px #fff;white-space:nowrap;pointer-events:none;animation:up 1.5s ease-out forwards}
+@keyframes up{0%{transform:translate(-50%,0) scale(.6);opacity:0}12%{opacity:1;transform:translate(-50%,-10px) scale(1.25)}22%{transform:translate(-50%,-14px) scale(1)}60%{opacity:1;transform:translate(-50%,-40px) scale(1)}100%{transform:translate(-50%,-120px) scale(1);opacity:0}}
 .coin{position:fixed;z-index:49;font-size:30px;pointer-events:none;animation:coin .9s ease-out forwards}
 @keyframes coin{0%{transform:translate(0,0) scale(.5);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1.1);opacity:0}}
 /* wrong-answer modal */
@@ -114,9 +131,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 @media (max-width:560px){.grid5{grid-template-columns:repeat(3,1fr)}.lvcard .v{font-size:17px}}
 /* player count */
 .counts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.counts.many{grid-template-columns:repeat(3,1fr);gap:12px}
 .cnt{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 8px}
 .cnt img{height:90px;max-width:100%;object-fit:contain}
 .cnt span{font-size:44px}
+.counts.many .cnt{padding:14px 6px;gap:4px}
+.counts.many .cnt img{height:56px}
+.counts.many .cnt .ppl{font-size:30px;line-height:56px;height:56px}
 /* lobby: one screen, no scrolling */
 .screen.lobby{height:100vh;height:100dvh;min-height:0;padding:10px 14px;gap:8px}
 .ltop{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
@@ -132,7 +153,32 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 .spot .who{position:absolute;bottom:-6px;background:var(--ink);color:#fff;border-radius:99px;padding:0 10px;font-size:15px;font-weight:800;white-space:nowrap}
 .spot.taken img{opacity:.35;filter:grayscale(.6);animation:none}
 .spot.taken{cursor:not-allowed}
-.spot.mine img{opacity:0}
+.spot.mine img{opacity:0;transition:opacity .3s}
+.spot.mine .ped{opacity:.5}
+/* the grey shadow in the middle turns into the buddy */
+#meWalker{transition:none;pointer-events:auto;touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#meWalker img{-webkit-user-drag:none;pointer-events:none}
+#meWalker.glide{transition:left .5s ease-out,top .5s ease-out}
+#meWalker.dragging{cursor:grabbing;z-index:9}
+#meWalker.dragging .mebody{transform:scale(1.12);filter:drop-shadow(0 12px 10px rgba(0,0,0,.25))}
+.mewalk.locked{cursor:default}
+.mewalk .mebody{transition:transform .15s}
+.spot.target img{transform:scale(1.18);filter:drop-shadow(0 0 14px #fde047) drop-shadow(0 6px 4px rgba(0,0,0,.2));animation:none}
+.spot.target .ped{background:radial-gradient(#fde68a,#fcd34d 60%,transparent 72%);opacity:1}
+.mewalk.idle .mebody{animation:beckon 1.6s ease-in-out infinite}
+@keyframes beckon{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.mewalk.morph .mebody{animation:morph .95s ease-in-out}
+@keyframes morph{0%{transform:scale(1) rotateY(0);filter:brightness(1)}
+  35%{transform:scale(.55) rotateY(540deg);filter:brightness(2.6) drop-shadow(0 0 18px #fff)}
+  50%{transform:scale(.4) rotateY(720deg);filter:brightness(4) drop-shadow(0 0 30px #fde047)}
+  75%{transform:scale(1.25) rotateY(1080deg);filter:brightness(1.6) drop-shadow(0 0 22px #fde047)}
+  100%{transform:scale(1) rotateY(1080deg);filter:brightness(1)}}
+.flyer{position:absolute;z-index:8;pointer-events:none;object-fit:contain;transition:left .45s ease-in,top .45s ease-in,width .45s ease-in,height .45s ease-in,opacity .45s ease-in}
+.flash{position:absolute;width:44%;aspect-ratio:1;transform:translate(-50%,-50%) scale(.1);border-radius:50%;pointer-events:none;z-index:4;
+  background:radial-gradient(circle,#fff 0,#fef08a 30%,rgba(253,224,71,.5) 55%,transparent 70%);animation:flash .9s ease-out forwards}
+@keyframes flash{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}45%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.4)}}
+.spark{position:absolute;font-size:34px;pointer-events:none;z-index:7;transform:translate(-50%,-50%);animation:spark .85s ease-out forwards}
+@keyframes spark{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2) rotate(200deg)}}
 .mewalk{position:absolute;left:50%;top:62%;width:20%;height:28%;transform:translate(-50%,-100%);transition:left .9s ease-in-out,top .9s ease-in-out;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;pointer-events:none}
 .mebody{width:100%;height:90%;display:flex;align-items:flex-end;justify-content:center}
 .mebody img{max-width:100%;max-height:100%;object-fit:contain}
@@ -209,7 +255,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
 @keyframes jump{30%{transform:translateY(-34px) scale(1.12)}60%{transform:translateY(0)}80%{transform:translateY(-10px)}}
 .mybuddy.sad{animation:sad .6s}
 @keyframes sad{20%,60%{transform:rotate(-12deg)}40%,80%{transform:rotate(12deg)}}
-@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
+@media (max-width:560px){.walker,.walker .body{width:86px}.walker .body{height:86px;font-size:60px}.mybuddy{width:110px;height:110px}.floatmoney{font-size:38px}.register{height:80px}.shopb .sign{font-size:15px}.water{width:110px;height:34px}.fountain{font-size:64px}}
 @media (max-width:420px){.cnt img{height:60px}}
 .vis{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;background:#fff;border-radius:24px;padding:10px 14px;max-width:100%;box-shadow:0 6px 0 rgba(31,37,68,.08)}
 .vis.on{display:flex}
@@ -253,6 +299,7 @@ table.rec td.now{color:var(--blue-d)}
 #sPlay .q{min-height:0;gap:8px}
 .qtop{flex:none}
 .mybuddy{width:min(140px,15vh);height:min(140px,15vh)}
+.register{height:min(105px,11vh)}
 .speaker{width:min(120px,14vh);height:min(120px,14vh);flex:none}
 .speaker img{width:70%;height:70%}
 .vis{flex:none}
@@ -295,25 +342,26 @@ table.rec td.now{color:var(--blue-d)}
 
 <div id="sName" class="screen on">
   <div class="title" id="setTitle">Cash Quest</div>
-  <p class="sub">Who are you? 👋</p>
-  <div class="names" id="names"></div>
+  <p class="sub">What's your name? 👋</p>
+  <div class="namebox panel">
+    <input id="nameIn" type="text" maxlength="12" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Type your name">
+    <div class="scriptpick"><span>中文字：</span><button class="sp" data-s="T">繁體</button><button class="sp" data-s="S">简体</button></div>
+    <div class="warn" id="nameWarn"></div>
+    <button class="btn green" id="nameGo">Go! ▶</button>
+  </div>
 </div>
 
 <div id="sCount" class="screen">
   <div class="title" id="hello"></div>
   <p class="sub">How many players? 👫</p>
-  <div class="counts">
-    <button class="btn pink cnt" data-n="1"><img id="p1img" alt=""><span>1</span></button>
-    <button class="btn gold cnt" data-n="2"><img id="p2img" alt=""><span>2</span></button>
-    <button class="btn green cnt" data-n="3"><img id="p3img" alt=""><span>3</span></button>
-  </div>
+  <div class="counts" id="counts"></div>
   <button class="btn white" id="backName" style="margin-top:22px">Back</button>
 </div>
 
 <div id="sLobby" class="screen lobby">
   <div class="ltop"><div class="title ltitle">Pick your buddy! 🌟</div><span class="pill" id="lobbyInfo"></span></div>
   <div class="stage" id="stage">
-    <div class="stagehint" id="stageHint">👆 Tap a buddy to change into it!</div>
+    <div class="stagehint" id="stageHint">👆 Drag yourself to a buddy!</div>
     <div class="homespot"></div>
     <div id="spots"></div>
     <div class="mewalk" id="meWalker"><div class="mebody" id="meBody"></div><span class="tag" id="meTag"></span></div>
@@ -322,7 +370,7 @@ table.rec td.now{color:var(--blue-d)}
   <div class="warn" id="lobbyWarn"></div>
   <div class="lbtns">
     <button class="btn white" id="backCount">◀ Players</button>
-    <button class="btn green" id="readyBtn">✋ I'm ready!</button>
+    <button class="btn green" id="readyBtn">✋ 我好了！</button>
   </div>
   <p class="lfoot">⏰ <span id="mins">8</span> min · 🔊 Listen → 👆 Tap → 💰 Earn → 🛒 Shop</p>
 </div>
@@ -340,7 +388,7 @@ table.rec td.now{color:var(--blue-d)}
     <button class="iconbtn cartbtn" id="shopBtn"><img id="cartImg" alt="">Shop</button>
   </div>
   <div class="q">
-    <div class="qtop"><div class="mybuddy" id="myBuddy"></div><button class="speaker" id="speak" aria-label="Play sound"><img id="speakerImg" alt=""></button></div>
+    <div class="qtop"><div class="mybuddy" id="myBuddy"></div><img class="register" id="registerImg" alt=""><button class="speaker" id="speak" aria-label="Play sound"><img id="speakerImg" alt=""></button></div>
     <div class="vis" id="vis"></div>
     <div class="hint" id="hint"></div>
     <div class="opts" id="opts"></div>
@@ -427,17 +475,24 @@ table.rec td.now{color:var(--blue-d)}
 <button class="musicbtn fsbtn" id="fsBtn" aria-label="Full screen">⛶</button>
 <div id="volBox"><button class="vb" data-v="0">🔇 0%</button><button class="vb" data-v="3">3%</button><button class="vb" data-v="5">5%</button><button class="vb" data-v="10">10%</button></div>
 
-<script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";window.STUDENTS=["正宇", "長欣", "長恩"];window.SCRIPT={"正宇":"T","長欣":"S","長恩":"S"};
+<script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";
 (function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js?v=202611051419"><\/script>');})();</script>
-<script src="assets.js?v=202611051419"></script>
-<script src="avatars.js?v=202611051419"></script>
+document.write('<script src="sets/'+s+'.js?v=202611111903"><\/script>');})();</script>
+<script src="assets.js?v=202611111903"></script>
+<script>(function(){var G=[{"months": [], "file": "avatars_default.js"}],q=parseInt(new URLSearchParams(location.search).get('month')||'',10),mo=(q>=1&&q<=12)?q:new Date().getMonth()+1,f=null;
+G.forEach(function(g){if(g.months.indexOf(mo)>=0)f=f||g.file});if(!f)G.forEach(function(g){if(!g.months.length)f=f||g.file});f=f||G[0].file;
+document.write('<script src="'+f+'?v=202611111903"><\/script>');})();</script>
 
 <script>
 (function(){
 var SET=window.SET, UI=window.UI||{}, STUDENTS=window.STUDENTS||[];
-// 6 items or fewer: 5 minutes; 7-10: 8 minutes; more than 10: 10 minutes
-var GAME_SECONDS=(SET.items.length<=6?5:SET.items.length<=10?8:10)*60, BGM_VOL=0.05;
+// Game length. The teacher can set it in the link: ...?set=O3&min=6  (1 to 30 minutes)
+// Without min= : 6 items or fewer: 5 minutes; 7-10: 8 minutes; more than 10: 10 minutes
+var URLMIN=parseInt(new URLSearchParams(location.search).get('min')||'',10);
+var GAME_MIN=(URLMIN>=1&&URLMIN<=30)?URLMIN:(SET.items.length<=6?5:SET.items.length<=10?8:10);
+var GAME_SECONDS=GAME_MIN*60, BGM_VOL=0.05;
+// the most players in one game: 6 (and never more than the number of buddies)
+var MAX_PLAYERS=6;
 var MPQ=[[1,0],[5,10],[50,100],[100,1000],[500,10000],[2000,75000],[5000,300000],[10000,1000000],[250000,10000000],[1000000,100000000]];
 var STK=[[1,0],[3,20],[10,200],[50,2000],[250,20000],[1200,200000],[6500,2000000],[35000,20000000],[175000,200000000],[1000000,2000000000]];
 // Auto Cash: [money per second, price]
@@ -452,7 +507,11 @@ var streetTimer=null,myX=PLAZA_X,myY=PLAZA_Y,myShop=null,walkTimer=null;
 bgm.loop=true;bgm.volume=BGM_VOL;if(UI.bgm)bgm.src=UI.bgm;if(UI.cash)cash.src=UI.cash;
 function $(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id)});window.scrollTo(0,0)}
+// short form for shop cards and floating "+$" numbers, e.g. $1.1M
 function fmt(n){n=Math.floor(n);if(n>=1e9)return '$'+(n/1e9).toFixed(n%1e9?1:0)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(n%1e6?1:0)+'M';if(n>=1e5)return '$'+Math.round(n/1e3)+'K';return '$'+n.toLocaleString('en-US')}
+// full number with commas for the money total, final score and records, e.g. $1,234,567
+function fmtFull(n){n=Math.max(0,Math.floor(n||0));return '$'+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+function moneySize(el,txt){el.classList.toggle('long',txt.length>9&&txt.length<=12);el.classList.toggle('xlong',txt.length>12)}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function safePlay(a){try{var p=a.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
 function avatarNode(i){
@@ -478,8 +537,8 @@ var LOCAL=(function(){ // single-device stand-in; ?bots=1 or 2 adds pretend clas
   var L={players:{},startAt:0,gameId:null},street={},t0=Date.now();
   function now(){return Date.now()}
   function addBots(count){
-    var names=STUDENTS.filter(function(n){return n!==me.name}).slice(0,Math.min(bots,count-1));
-    names.forEach(function(n,i){if(!L.players[n])L.players[n]={avatar:null,ready:false,count:count,seen:now(),bot:now()+1500*(i+1)}});
+    var names=['Amy','Ben','Coco','Dan','Eva','Finn','Gigi','Hank','Ivy','Jay','Kai'].filter(function(n){return n!==me.name}).slice(0,Math.min(bots,count-1));
+    names.forEach(function(n,i){if(!L.players[n])L.players[n]={avatar:null,ready:false,count:count,min:GAME_MIN,seen:now(),bot:now()+1500*(i+1)}});
   }
   function botsTick(){Object.keys(L.players).forEach(function(n){var p=L.players[n];if(p.bot&&now()>p.bot){if(p.avatar==null){var used=Object.keys(L.players).map(function(k){return L.players[k].avatar});for(var a=AV_COUNT-1;a>=0;a--)if(used.indexOf(a)<0){p.avatar=a;break}}p.ready=true;p.seen=now()}})}
   function view(){botsTick();maybeStart();return {now:now(),players:L.players,startAt:L.startAt,gameId:L.gameId}}
@@ -489,7 +548,7 @@ var LOCAL=(function(){ // single-device stand-in; ?bots=1 or 2 adds pretend clas
       if(names.every(function(n){return L.players[n].count===c})&&names.length===c){L.startAt=now()+3500;L.gameId='g'+now()}}
   }
   return {
-    lobbyJoin:function(set,name,count){if(L.startAt&&now()>L.startAt+5000)L={players:{},startAt:0,gameId:null};L.players[name]={avatar:null,ready:false,count:count,seen:now()};addBots(count);return view()},
+    lobbyJoin:function(set,name,count,cid,min){if(L.startAt&&now()>L.startAt+5000)L={players:{},startAt:0,gameId:null};L.players[name]={avatar:null,ready:false,count:count,min:min,cid:cid,seen:now()};addBots(count);return view()},
     lobbyUpdate:function(set,name,avatar,ready){var p=L.players[name];if(!p)return view();
       if(avatar!=null){var taken=Object.keys(L.players).some(function(n){return n!==name&&L.players[n].avatar===avatar});if(!taken)p.avatar=avatar}
       if(ready!=null)p.ready=!!ready&&p.avatar!=null;p.seen=now();return view()},
@@ -509,28 +568,50 @@ var LOCAL=(function(){ // single-device stand-in; ?bots=1 or 2 adds pretend clas
   };
   function localResults(set,gid){var all=[];try{all=JSON.parse(localStorage.getItem('cq_scores')||'[]')}catch(e){}
       var round={},best={},prev={};
-      all.filter(function(r){return r.set===set&&STUDENTS.indexOf(r.name)>=0}).forEach(function(r){
+      all.filter(function(r){return r.set===set}).forEach(function(r){
         if(!(r.name in best)||r.money>best[r.name])best[r.name]=r.money;
         if(gid&&r.gameId===gid){if(!(r.name in round)||r.money>round[r.name])round[r.name]=r.money}
         else if(!(r.name in prev)||r.money>prev[r.name])prev[r.name]=r.money});
       return {round:Object.keys(round).map(function(n){return {name:n,money:round[n]}}).sort(function(a,b){return b.money-a.money}),
-        records:STUDENTS.map(function(n){return {name:n,best:n in best?best[n]:null,prev:n in prev?prev[n]:null,now:n in round?round[n]:null}})}
+        records:Object.keys(round).sort(function(a,b){return round[b]-round[a]}).map(function(n){return {name:n,best:n in best?best[n]:null,prev:n in prev?prev[n]:null,now:n in round?round[n]:null}})}
   }
 })();
 
 /* ---------- static UI ---------- */
-['speakerImg','cartImg','shop1','shop2','shop3','p1img','p2img','p3img'].forEach(function(id){var k={speakerImg:'speaker',cartImg:'cart',shop1:'shop1',shop2:'shop2',shop3:'shop3',p1img:'p1',p2img:'p2',p3img:'p3'}[id];if(UI[k])$(id).src=UI[k];else $(id).style.display='none'});
-$('setTitle').textContent=SET.title;$('mins').textContent=GAME_SECONDS/60;
-STUDENTS.forEach(function(n,i){var b=document.createElement('button');b.className='btn '+['pink','gold','green','blue'][i%4];b.textContent=n;b.onclick=function(){me.name=n;$('hello').textContent='Hi, '+n+'! 🌟';show('sCount')};$('names').appendChild(b)});
+if(UI.register)$('registerImg').src=UI.register;else $('registerImg').style.display='none';
+['speakerImg','cartImg','shop1','shop2','shop3'].forEach(function(id){var k={speakerImg:'speaker',cartImg:'cart',shop1:'shop1',shop2:'shop2',shop3:'shop3'}[id];if(UI[k])$(id).src=UI[k];else $(id).style.display='none'});
+$('setTitle').textContent=SET.title;$('mins').textContent=GAME_MIN;
+/* name screen: the child types a name (remembered on this tablet) and picks 繁體 or 简体 */
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var CID=store('cq_cid');if(!CID){CID='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);store('cq_cid',CID)}
+function cleanName(s){return String(s||'').replace(/[<>"\\]/g,'').replace(/\s+/g,' ').trim().slice(0,12)}
+var myScript=store('cq_script')||'T';
+function paintScript(){document.querySelectorAll('.sp').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-s')===myScript)})}
+document.querySelectorAll('.sp').forEach(function(b){b.onclick=function(){myScript=b.getAttribute('data-s');store('cq_script',myScript);paintScript()}});
+paintScript();
+$('nameIn').value=store('cq_name')||'';
+function nameWarn(t){$('nameWarn').textContent=t;$('nameWarn').classList.toggle('on',!!t)}
+function goName(){
+  var n=cleanName($('nameIn').value);
+  if(!n){nameWarn('✏️ Please type your name!');$('nameIn').focus();return}
+  nameWarn('');$('nameIn').value=n;store('cq_name',n);me.name=n;
+  try{$('nameIn').blur()}catch(e){}
+  $('hello').textContent='Hi, '+n+'! 🌟';show('sCount');
+}
+$('nameGo').onclick=goName;
+$('nameIn').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();goName()}});
+$('nameIn').addEventListener('input',function(){nameWarn('')});
 $('backName').onclick=function(){show('sName')};
 /* music starts at the first tap on the first screen (tablets block sound until the child taps) */
 var musicStarted=false;
 /* full screen: hides the browser's tab bar and address bar (Android Chrome); turns on at the first tap */
 function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement}
 function goFull(){var d=document.documentElement,f=d.requestFullscreen||d.webkitRequestFullscreen;if(f&&!fsEl()){try{var p=f.call(d);if(p&&p.catch)p.catch(function(){})}catch(e){}}}
-var fsTried=false;
-function startMusic(){if(!fsTried){fsTried=true;goFull()}if(musicStarted)return;musicStarted=true;if(musicOn)safePlay(bgm)}
-$('fsBtn').onclick=function(e){e.stopPropagation();if(fsEl()){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else goFull()};
+// Browsers only allow full screen after a tap, so: every tap goes back to full screen if it was lost
+// (e.g. the keyboard came up or the tablet slept). Only if someone tapped ⛶ to leave on purpose does it stay off.
+var fsUserOff=false;
+function startMusic(e){if(!fsUserOff&&!fsEl()&&!(e&&e.target&&e.target.id==='fsBtn'))goFull();if(musicStarted)return;musicStarted=true;if(musicOn)safePlay(bgm)}
+$('fsBtn').onclick=function(e){e.stopPropagation();if(fsEl()){fsUserOff=true;(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else{fsUserOff=false;goFull()}};
 if(!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen))$('fsBtn').style.display='none';
 document.addEventListener('pointerdown',startMusic,true);document.addEventListener('keydown',startMusic,true);
 /* music volume: tap 🎵 to choose 0% / 3% / 5% / 10% (default 5%); remembered on this tablet */
@@ -542,20 +623,30 @@ document.addEventListener('pointerdown',startMusic,true);document.addEventListen
     document.querySelectorAll('.vb').forEach(function(b){b.classList.toggle('on',+b.getAttribute('data-v')===v)});
     if(musicOn&&musicStarted&&bgm.paused)safePlay(bgm);if(!musicOn)bgm.pause()}
 })();
-document.querySelectorAll('.cnt').forEach(function(b){b.onclick=function(){joinLobby(parseInt(b.getAttribute('data-n'),10))}});
+/* how many players: 1 up to the number of buddies (each player needs a different buddy) */
+(function(){var max=Math.max(1,Math.min(MAX_PLAYERS,AV_COUNT)),box=$('counts');box.classList.toggle('many',max>3);
+  for(var n=1;n<=max;n++)(function(n){var b=document.createElement('button');b.className='btn cnt '+['pink','gold','green','blue'][(n-1)%4];
+    if(UI['p'+n]){var im=document.createElement('img');im.src=UI['p'+n];im.alt='';b.appendChild(im)}
+    else{var e=document.createElement('div');e.className='ppl';e.textContent=n<=3?'🙂':'👫';b.appendChild(e)}
+    var s=document.createElement('span');s.textContent=n;b.appendChild(s);
+    b.onclick=function(){joinLobby(n)};box.appendChild(b)})(n);
+})();
 
 /* ---------- lobby ---------- */
 // buddies stand around the edge of the stage; the child starts as a grey shadow in the middle
-var SPOTS=[[15,40],[50,30],[85,40],[15,93],[50,98],[85,93]],ME_HOME=[50,64];
+// buddies stand in a ring around the grey shadow (positions are the buddy's feet, in % of the stage)
+var ME_HOME=[50,66],SPOTS=[],SPOT_W=AV_COUNT<=6?22:AV_COUNT<=9?19:16,SPOT_H=AV_COUNT<=6?30:AV_COUNT<=9?27:23;
+(function(){var cx=50,cy=64.5,rx=50-SPOT_W/2-1.5,ry=(97-(SPOT_H+3))/2;cy=(SPOT_H+3)+ry;
+  for(var k=0;k<AV_COUNT;k++){var a=-Math.PI/2+k*2*Math.PI/AV_COUNT;SPOTS.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a)])}})();
 function buildStage(){
   var box=$('spots');box.innerHTML='';
   for(var i=0;i<AV_COUNT;i++)(function(i){
     var b=document.createElement('button');b.className='spot';b.id='spot'+i;
-    var pos=SPOTS[i%SPOTS.length];b.style.left=pos[0]+'%';b.style.top=pos[1]+'%';
+    var pos=SPOTS[i%SPOTS.length];b.style.left=pos[0]+'%';b.style.top=pos[1]+'%';b.style.width=SPOT_W+'%';b.style.height=SPOT_H+'%';
     b.appendChild(avatarNode(i));var pd=document.createElement('span');pd.className='ped';b.appendChild(pd);
     b.onclick=function(){pickBuddy(i)};box.appendChild(b)})(i);
-  var m=$('meWalker');m.classList.add('notrans');m.style.left=ME_HOME[0]+'%';m.style.top=ME_HOME[1]+'%';void m.offsetWidth;m.classList.remove('notrans');
-  setMeLook(null);$('meTag').textContent=me.name;$('stageHint').style.display='';
+  var m=$('meWalker');m.style.width=(SPOT_W+2)+'%';m.style.height=(SPOT_H+1)+'%';m.classList.add('notrans');m.style.left=ME_HOME[0]+'%';m.style.top=ME_HOME[1]+'%';void m.offsetWidth;m.classList.remove('notrans');
+  setMeLook(null);$('meTag').textContent=me.name;$('stageHint').style.display='';m.classList.add('idle');
 }
 function setMeLook(av){
   var b=$('meBody');b.innerHTML='';
@@ -563,41 +654,93 @@ function setMeLook(av){
   else b.appendChild(avatarNode(av));
 }
 var lastLobby={players:{}},walking=false,pending=false,oopsUntil=0;
-function pickBuddy(i){
+function pickBuddy(i,dropped){
   if(me.ready||walking)return;
   var P=lastLobby.players||{};
   if(Object.keys(P).some(function(n){return n!==me.name&&P[n].avatar===i}))return;
   if(me.avatar===i)return;
   walking=true;$('stageHint').style.display='none';
-  var pos=SPOTS[i%SPOTS.length],m=$('meWalker');
-  m.classList.add('moving');m.style.left=pos[0]+'%';m.style.top=(pos[1]+1)+'%';
-  if(me.avatar!=null)$('spot'+me.avatar).classList.remove('mine');
+  var old=me.avatar;me.avatar=i;pending=true;
+  api('lobbyUpdate',SET.id,me.name,i,null).then(function(v){pending=false;if(!walking)onLobby(v);else lastServer=v}).catch(function(){pending=false;netErr()});
+  morphTo(i,function(){if(old!=null&&old!==i&&$('spot'+old))$('spot'+old).classList.remove('mine');walking=false;if(dropped)glideHome();renderLobby(lastLobby);if(lastServer){var v=lastServer;lastServer=null;onLobby(v)}});
+}
+var lastServer=null;
+/* drag the grey shadow (or your buddy) onto a buddy to change into it */
+function glideHome(){var m=$('meWalker');m.classList.add('glide');m.style.left=ME_HOME[0]+'%';m.style.top=ME_HOME[1]+'%';setTimeout(function(){m.classList.remove('glide')},550)}
+function buddyFree(i){var P=lastLobby.players||{};return i!==me.avatar&&!Object.keys(P).some(function(n){return n!==me.name&&P[n].avatar===i})}
+(function(){
+  var m=$('meWalker'),drag=null;
+  function spotAt(x,y){var hit=-1,best=1e9;
+    for(var i=0;i<AV_COUNT;i++){var r=$('spot'+i).getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.6;
+      if(x>=r.left-r.width*.15&&x<=r.right+r.width*.15&&y>=r.top-r.height*.1&&y<=r.bottom+r.height*.1){var d=(x-cx)*(x-cx)+(y-cy)*(y-cy);if(d<best){best=d;hit=i}}}
+    return hit}
+  function mark(i){for(var k=0;k<AV_COUNT;k++){var sp=$('spot'+k);if(sp)sp.classList.toggle('target',k===i)}}
+  m.addEventListener('pointerdown',function(e){
+    if(me.ready||walking||!$('sLobby').classList.contains('on'))return;
+    e.preventDefault();try{m.setPointerCapture(e.pointerId)}catch(_){}
+    var sr=$('stage').getBoundingClientRect();
+    drag={id:e.pointerId,sr:sr,dx:e.clientX-(sr.left+parseFloat(m.style.left)/100*sr.width),dy:e.clientY-(sr.top+parseFloat(m.style.top)/100*sr.height),moved:false,target:-1};
+    m.classList.remove('glide','idle');m.classList.add('dragging');$('stageHint').style.display='none';
+  });
+  m.addEventListener('pointermove',function(e){
+    if(!drag||e.pointerId!==drag.id)return;e.preventDefault();var sr=drag.sr;
+    var x=Math.max(0,Math.min(100,(e.clientX-drag.dx-sr.left)/sr.width*100)),y=Math.max(SPOT_H,Math.min(100,(e.clientY-drag.dy-sr.top)/sr.height*100));
+    m.style.left=x+'%';m.style.top=y+'%';drag.moved=true;
+    var t=spotAt(e.clientX,e.clientY);drag.target=(t>=0&&buddyFree(t))?t:-1;mark(drag.target);
+  });
+  function end(e){
+    if(!drag||e.pointerId!==drag.id)return;var t=drag.target;drag=null;
+    m.classList.remove('dragging');mark(-1);
+    if(t>=0&&buddyFree(t)){var pos=SPOTS[t];m.classList.add('glide');m.style.left=pos[0]+'%';m.style.top=(pos[1]+1)+'%';
+      setTimeout(function(){m.classList.remove('glide');pickBuddy(t,true)},250)}
+    else glideHome();
+  }
+  m.addEventListener('pointerup',end);m.addEventListener('pointercancel',end);
+})();
+/* the buddy jumps from its spot into the middle, and the grey shadow spins, flashes and becomes the buddy */
+function morphTo(i,done){
+  $('meWalker').classList.remove('idle');
+  var stage=$('stage'),sr=stage.getBoundingClientRect(),spot=$('spot'+i),img=spot&&spot.querySelector('img'),m=$('meWalker');
+  if(img){var r=img.getBoundingClientRect(),f=document.createElement('img');f.className='flyer';f.src=img.src;
+    f.style.left=(r.left-sr.left)+'px';f.style.top=(r.top-sr.top)+'px';f.style.width=r.width+'px';f.style.height=r.height+'px';
+    stage.appendChild(f);spot.classList.add('mine');void f.offsetWidth;
+    var mr=m.getBoundingClientRect(),cx=mr.left-sr.left+mr.width/2,cy=mr.top-sr.top+mr.height*.55;
+    f.style.left=(cx-20)+'px';f.style.top=(cy-20)+'px';f.style.width='40px';f.style.height='40px';f.style.opacity='.2';
+    setTimeout(function(){f.remove()},470)}
   setTimeout(function(){
-    m.classList.remove('moving');
-    var pf=document.createElement('div');pf.className='poof';pf.textContent='✨';
-    pf.style.left=pos[0]+'%';pf.style.top=(pos[1]-14)+'%';$('stage').appendChild(pf);setTimeout(function(){pf.remove()},750);
-    me.avatar=i;setMeLook(i);$('spot'+i).classList.add('mine');walking=false;
-    renderLobby(lastLobby);
-    pending=true;
-    api('lobbyUpdate',SET.id,me.name,i,null).then(function(v){pending=false;onLobby(v)}).catch(function(){pending=false;netErr()});
-  },900);
+    var mr=m.getBoundingClientRect(),cx=(mr.left-sr.left+mr.width/2)/sr.width*100,cy=(mr.top-sr.top+mr.height*.55)/sr.height*100;
+    var fl=document.createElement('div');fl.className='flash';fl.style.left=cx+'%';fl.style.top=cy+'%';stage.appendChild(fl);setTimeout(function(){fl.remove()},950);
+    m.classList.remove('morph');void m.offsetWidth;m.classList.add('morph');
+    setTimeout(function(){setMeLook(i)},470);
+    setTimeout(function(){
+      ['✨','⭐','🌟','✨','💫','⭐','✨','🌟'].forEach(function(t,k){var s=document.createElement('div');s.className='spark';s.textContent=t;
+        var a=k*Math.PI/4+.3,d=Math.min(sr.width,sr.height)*.22;s.style.left=cx+'%';s.style.top=cy+'%';
+        s.style.setProperty('--dx',Math.round(Math.cos(a)*d)+'px');s.style.setProperty('--dy',Math.round(Math.sin(a)*d)+'px');
+        stage.appendChild(s);setTimeout(function(){s.remove()},900)});
+    },420);
+    setTimeout(function(){m.classList.remove('morph');done&&done()},960);
+  },img?420:0);
 }
 function joinLobby(n){
   me.count=n;me.avatar=null;me.ready=false;started=false;walking=false;
   buildStage();renderLobby({players:{},startAt:0});show('sLobby');
-  api('lobbyJoin',SET.id,me.name,n).then(onLobby).catch(netErr);
+  api('lobbyJoin',SET.id,me.name,n,CID,GAME_MIN).then(onLobby).catch(netErr);
   clearInterval(lobbyTimer);lobbyTimer=setInterval(function(){api('lobbyPoll',SET.id,me.name).then(onLobby).catch(function(){})},1500);
 }
-function leaveLobby(){clearInterval(lobbyTimer);lobbyTimer=null;api('lobbyLeave',SET.id,me.name).catch(function(){})}
+function leaveLobby(){clearInterval(lobbyTimer);lobbyTimer=null;api('lobbyLeave',SET.id,me.name,CID).catch(function(){})}
 $('backCount').onclick=function(){leaveLobby();show('sCount')};
 $('readyBtn').onclick=function(){
   if(me.avatar==null){$('lobbyWarn').textContent='👆 Pick a buddy first!';$('lobbyWarn').classList.add('on');return}
   me.ready=!me.ready;api('lobbyUpdate',SET.id,me.name,null,me.ready).then(onLobby).catch(netErr);paintReady();
 };
-function paintReady(){$('readyBtn').textContent=me.ready?'✅ Ready! (tap to undo)':"✋ I'm ready!";$('readyBtn').className='btn '+(me.ready?'gold':'green')}
+function paintReady(){$('readyBtn').textContent=me.ready?'✅ 我好了！ (tap to undo)':'✋ 我好了！';$('readyBtn').className='btn '+(me.ready?'gold':'green')}
 function netErr(){$('lobbyWarn').textContent='Connection problem… trying again';$('lobbyWarn').classList.add('on')}
 function onLobby(v){
   if(!v||started)return;
+  if(v.nameTaken){ // another tablet is already using this name in the waiting room
+    clearInterval(lobbyTimer);lobbyTimer=null;show('sName');
+    nameWarn('😮 "'+me.name+'" is already playing. Add a letter or number to your name!');return;
+  }
   clockOffset=v.now-Date.now();
   var mine=v.players[me.name];
   if(mine&&!walking&&!pending){
@@ -605,8 +748,7 @@ function onLobby(v){
     if(mine.avatar!==me.avatar){ // someone else got that buddy first: go back to being a shadow
       if(me.avatar!=null&&$('spot'+me.avatar))$('spot'+me.avatar).classList.remove('mine');
       me.avatar=mine.avatar;setMeLook(me.avatar);
-      var m=$('meWalker'),pos=me.avatar==null?ME_HOME:[SPOTS[me.avatar%SPOTS.length][0],SPOTS[me.avatar%SPOTS.length][1]+1];
-      m.style.left=pos[0]+'%';m.style.top=pos[1]+'%';
+      if(me.avatar!=null&&$('spot'+me.avatar))$('spot'+me.avatar).classList.add('mine');
       if(me.avatar==null)oopsUntil=Date.now()+4000;
     }
   }
@@ -628,6 +770,7 @@ function renderLobby(v){
   // check that everybody chose the same number of players
   var warn='',counts=names.map(function(n){return P[n].count});
   if(counts.some(function(c){return c!==me.count}))warn='⚠️ Someone chose a different number of players. Tap "Change players" to fix it.';
+  else if(names.some(function(n){return P[n].min&&P[n].min!==GAME_MIN}))warn='⚠️ Someone opened a game with a different time. Ask your teacher for the link.';
   else if(names.length>me.count)warn='⚠️ There are '+names.length+' players here. Tap "Change players" to fix it.';
   else if(Date.now()<oopsUntil)warn='Oops! Someone took that buddy. Pick another one!';
   $('lobbyWarn').textContent=warn;$('lobbyWarn').classList.toggle('on',!!warn);
@@ -658,7 +801,8 @@ function passive(){var g=INC[st.inc][0];if(!g||st.left<0)return;st.money+=g;
 function tick(){
   var L=Math.max(0,st.left),m=Math.floor(L/60),s=L%60,t=m+':'+(s<10?'0':'')+s;
   ['timer','timer2'].forEach(function(id){$(id).textContent='⏰ '+t;$(id).classList.toggle('low',L<=30)});
-  var ps=INC[st.inc]&&INC[st.inc][0]?'<span class="ps">+'+fmt(INC[st.inc][0])+'/s</span>':'';$('money').innerHTML=fmt(st.money)+ps;$('money2').innerHTML=fmt(st.money)+ps;$('streak').textContent='🔥 '+st.streak;
+  var ps=INC[st.inc]&&INC[st.inc][0]?'<span class="ps">+'+fmt(INC[st.inc][0])+'/s</span>':'',mt=fmtFull(st.money);
+  ['money','money2'].forEach(function(id){$(id).innerHTML=mt+ps;moneySize($(id),mt)});$('streak').textContent='🔥 '+st.streak;
 }
 var NUM='一二三四五';
 function next(){
@@ -695,8 +839,7 @@ function drawMath(vis,m){ // e.g. 🍎 + 🍎🍎🍎  or  🍎🍎🍎🍎🍎 
 }
 function answerFace(){return current._ans?{text:current._ans}:current}
 // which script each child reads: 'T' = 繁體, 'S' = 简体
-var SCRIPT=window.SCRIPT||{};
-function labelText(o){if(!o.label)return '';return SCRIPT[me.name]==='T'?o.label[0]:o.label[1]}
+function labelText(o){if(!o.label)return '';return myScript==='T'?o.label[0]:o.label[1]}
 function face(o){
   if(o.img){var im=document.createElement('img');im.src=o.img;im.alt='';
     var lt=labelText(o);if(!lt)return im;
@@ -733,18 +876,44 @@ function answer(o,el){
     st.streak=0;tick();wrong(el);buddy('sad');
   }
 }
+/* correct answer: bills and coins fly from the card into the cash register next to the buddy */
+function cashToRegister(card){ // starts from the top edge of the card, away from the green +$ number
+  var reg=$('registerImg'),P=UI.money||[];
+  if(!reg.offsetWidth||!P.length||!document.body.animate)return;
+  var r=reg.getBoundingClientRect(),tx=r.left+r.width*.5,ty=r.top+r.height*.4,small=window.innerWidth<560;
+  for(var i=0;i<6;i++)(function(i){
+    var p=P[i%P.length],big=/bill/.test(p.k),sz=(big?40:26)*(small?.8:1);
+    var im=document.createElement('img');im.className='cashfly';im.src=p.d;im.style.width=sz+'px';im.style.opacity='0';document.body.appendChild(im);
+    var x0=card.left+card.width*(i%2?.82+.1*Math.random():.08+.1*Math.random()),y0=card.top+8,bend=(Math.random()*160-80),r0=Math.random()*360,spin=(Math.random()<.5?-1:1)*(240+Math.random()*240),kf=[];
+    for(var k=0;k<=10;k++){var t=k/10,e=t*t*(3-2*t),x=x0+(tx-x0)*e+bend*Math.sin(t*Math.PI),y=y0+(ty-y0)*e-40*Math.sin(t*Math.PI);
+      var sc=t<.15?.5+t/.15*.5:(t>.75?1-(t-.75)/.25*.75:1);
+      kf.push({transform:'translate('+(x-sz/2)+'px,'+(y-sz/2)+'px) rotate('+(r0+spin*t)+'deg) scale('+sc+')',opacity:t<.08?t/.08:(t>.9?(1-t)/.1:1)})}
+    var a=im.animate(kf,{duration:900,delay:i*90,easing:'linear',fill:'both'});
+    a.onfinish=function(){im.remove();reg.classList.remove('chomp');void reg.offsetWidth;reg.classList.add('chomp')};
+  })(i);
+}
+// top of what is actually drawn inside a card (picture, emoji or words), so the +$ number can sit above it
+function contentTop(el){
+  var t=null;
+  el.querySelectorAll('img').forEach(function(im){if(!im.naturalWidth)return;var ir=im.getBoundingClientRect();if(!ir.height)return;
+    var k=Math.min(ir.width/im.naturalWidth,ir.height/im.naturalHeight),y=ir.top+(ir.height-im.naturalHeight*k)/2;if(t==null||y<t)t=y});
+  var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null),n;
+  while((n=w.nextNode())){if(!n.nodeValue.trim())continue;var rg=document.createRange();rg.selectNodeContents(n);var rr=rg.getBoundingClientRect();if(rr.height&&(t==null||rr.top<t))t=rr.top}
+  return t;
+}
 function celebrate(el,gain){
   var gf=$('greenFlash');gf.classList.remove('on');void gf.offsetWidth;gf.classList.add('on');
   try{if(!current._ansAudio)voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
   var m=$('money');m.classList.remove('bump');void m.offsetWidth;m.classList.add('bump');
-  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/3;
-  var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmt(gain);f.style.left=cx+'px';f.style.top=cy+'px';document.body.appendChild(f);
-  var mr=m.getBoundingClientRect();
-  for(var i=0;i<6;i++){var c=document.createElement('div');c.className='coin';c.textContent='🪙';
-    c.style.left=(cx-15+(Math.random()*60-30))+'px';c.style.top=(cy+(Math.random()*40-20))+'px';
-    c.style.setProperty('--dx',(mr.left+mr.width/2-cx)+'px');c.style.setProperty('--dy',(mr.top-cy)+'px');
-    c.style.animationDelay=(i*0.07)+'s';document.body.appendChild(c);(function(c){setTimeout(function(){c.remove()},1300)})(c)}
-  setTimeout(function(){f.remove()},1200);
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2;
+  var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmtFull(gain);f.style.top='-999px';document.body.appendChild(f);
+  var fw=f.offsetWidth*1.25/2+8,fh=f.offsetHeight;f.style.left=Math.max(fw,Math.min(window.innerWidth-fw,cx))+'px'; // keep the whole number on screen
+  // put the number in the empty space above the picture, never on top of it; if there is no room, just above the card
+  var top=null,picTop=contentTop(el);
+  if(picTop!=null&&picTop-r.top>=fh+10)top=r.top+(picTop-r.top-fh)/2;
+  f.style.top=(top!=null?top:Math.max(4,r.top-fh-4))+'px';
+  cashToRegister(r);
+  setTimeout(function(){f.remove()},1600);
 }
 function wrong(el){
   el.classList.add('out');
@@ -768,9 +937,10 @@ function openStreet(){
 }
 // put my buddy back on the plaza instantly (no walking animation)
 function resetToPlaza(){
-  var slot=Math.max(0,STUDENTS.indexOf(me.name))%3; // each child gets their own spot on the plaza
+  // each child gets their own spot around the plaza (based on the buddy they picked)
+  var PX=[0,-11,11,-20,20,-6,6,-15,15,0,-24,24],PY=[0,-3,-3,4,4,8,8,12,12,14,-8,-8],slot=Math.max(0,me.avatar||0)%PX.length;
   myShop=null;clearTimeout(walkTimer);
-  myX=PLAZA_X+[0,-11,11][slot];myY=PLAZA_Y+[0,-3,-3][slot];
+  myX=PLAZA_X+PX[slot];myY=Math.min(96,PLAZA_Y+PY[slot]);
   var old=$('w_me');if(old)old.remove();   // rebuild so no old position or animation is left over
   drawMe();
 }
@@ -835,7 +1005,7 @@ function finish(){
   clearInterval(timerId);timerId=null;clearInterval(streetTimer);streetTimer=null;st.left=0;tick();
   try{voice.pause();bgm.pause()}catch(e){}musicStarted=false;
   $('modal').classList.remove('on');$('shopPop').classList.remove('on');document.querySelectorAll('.walker').forEach(function(w){w.remove()});
-  $('final').textContent=fmt(st.money);$('stats').textContent='✅ '+st.correct+' right out of '+st.total;
+  $('final').textContent=fmtFull(st.money);$('stats').textContent='✅ '+st.correct+' right out of '+st.total;
   show('sEnd');$('board').innerHTML='<tr><td colspan="3">Saving…</td></tr>';$('records').innerHTML='';
   var gid=gameId,tries=0;
   api('submitScore',{set:SET.id,name:me.name,gameId:gid,money:Math.floor(st.money),correct:st.correct,total:st.total}).then(function(r){
@@ -851,14 +1021,14 @@ $('again').onclick=function(){show('sCount')};
 function renderResults(r){
   var tb=$('board');tb.innerHTML='';
   (r.round||[]).forEach(function(x,i){var tr=document.createElement('tr');if(x.name===me.name)tr.className='me';
-    [['🥇','🥈','🥉'][i]||(i+1),x.name,fmt(x.money)].forEach(function(v){var td=document.createElement('td');td.textContent=v;tr.appendChild(td)});tb.appendChild(tr)});
+    [['🥇','🥈','🥉'][i]||(i+1),x.name,fmtFull(x.money)].forEach(function(v){var td=document.createElement('td');td.textContent=v;tr.appendChild(td)});tb.appendChild(tr)});
   var waiting=me.count-(r.round||[]).length;
   for(var k=0;k<waiting;k++){var tr=document.createElement('tr');tr.innerHTML='<td>…</td><td>Waiting…</td><td></td>';tb.appendChild(tr)}
   var rb=$('records');rb.innerHTML='';
   (r.records||[]).forEach(function(x){var tr=document.createElement('tr');if(x.name===me.name)tr.className='me';
     var n=document.createElement('td');n.textContent=x.name;tr.appendChild(n);
-    var b=document.createElement('td');b.textContent=x.best==null?'—':fmt(x.best);tr.appendChild(b);
-    var t=document.createElement('td');t.className='now';t.textContent=x.now==null?'':fmt(x.now);
+    var b=document.createElement('td');b.textContent=x.best==null?'—':fmtFull(x.best);tr.appendChild(b);
+    var t=document.createElement('td');t.className='now';t.textContent=x.now==null?'':fmtFull(x.now);
     if(x.now!=null&&x.now>0&&(x.prev==null||x.now>x.prev)){var nr=document.createElement('span');nr.className='newrec';nr.textContent='New record! 🎉';t.appendChild(nr)}
     tr.appendChild(t);rb.appendChild(tr)});
 }
