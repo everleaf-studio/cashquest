@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Quest · 老師設定</title>
+<style>
+body{font-family:-apple-system,"Segoe UI","Noto Sans TC",sans-serif;background:#eef2ff;color:#1f2544;margin:0;padding:24px;display:flex;justify-content:center}
+.box{background:#fff;border-radius:20px;padding:24px 26px;max-width:560px;width:100%;box-shadow:0 8px 24px rgba(31,37,68,.12)}
+h1{margin:0 0 4px;font-size:26px}
+p.note{margin:0 0 18px;color:#5b6185}
+label{display:block;font-weight:700;margin:16px 0 6px}
+select,input{font-size:20px;padding:8px 10px;border:2px solid #c7d2fe;border-radius:12px;width:100%;box-sizing:border-box}
+.mins{display:flex;flex-wrap:wrap;gap:8px}
+.mins button{font-size:18px;padding:8px 14px;border:0;border-radius:99px;background:#e2e8f0;cursor:pointer}
+.mins button.on{background:#3b82f6;color:#fff}
+#link{margin-top:20px;padding:12px;border-radius:12px;background:#f1f5f9;word-break:break-all;font-family:monospace;font-size:15px}
+.row{display:flex;gap:10px;margin-top:12px}
+.row a,.row button{flex:1;text-align:center;font-size:18px;font-weight:700;padding:12px;border:0;border-radius:14px;cursor:pointer;text-decoration:none}
+.go{background:#22c55e;color:#fff}.cp{background:#fbbf24;color:#5a3600}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Cash Quest 老師設定</h1>
+  <p class="note">選好練習和時間，把連結傳給學生（或直接開啟）。同一局的學生要用同一個連結。</p>
+  <label>練習</label>
+  <select id="set"></select>
+  <label>遊戲時間</label>
+  <div class="mins" id="mins"></div>
+  <div id="link"></div>
+  <div class="row"><a class="go" id="open" target="_blank">開啟遊戲 ▶</a><button class="cp" id="copy">複製連結</button></div>
+</div>
+<script>
+var SETS={"O1": "MZ B1 L1 · O1 動物和動作", "O2": "MZ B1 L1 · O2 數字用法", "O3": "MZ B1 L1 · O3 數一數", "O4": "MZ B1 L1 · O4 一到五", "O5": "MZ B1 L1 · O5 加加減減", "O6": "MZ B1 L1 · O6 課文"};
+var sel=document.getElementById('set'),min=0;
+Object.keys(SETS).forEach(function(k){var o=document.createElement('option');o.value=k;o.textContent=k+'　'+SETS[k];sel.appendChild(o)});
+var box=document.getElementById('mins');
+[0,3,4,5,6,8,10,12,15].forEach(function(m){var b=document.createElement('button');b.textContent=m?m+' 分鐘':'自動';b.dataset.m=m;
+  b.onclick=function(){min=m;paint()};box.appendChild(b)});
+sel.onchange=paint;
+function url(){var u=new URL('./',location.href);u.searchParams.set('set',sel.value);if(min)u.searchParams.set('min',min);return u.toString()}
+function paint(){box.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',+b.dataset.m===min)});
+  var u=url();document.getElementById('link').textContent=u;document.getElementById('open').href=u}
+document.getElementById('copy').onclick=function(){var u=url(),b=this;
+  (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){b.textContent='已複製 ✓';setTimeout(function(){b.textContent='複製連結'},1500)})
+  .catch(function(){prompt('請複製這個連結：',u)})};
+paint();
+</script>
+</body>
+</html>
