@@ -477,11 +477,11 @@ table.rec td.now{color:var(--blue-d)}
 
 <script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";
 (function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js?v=202611111917"><\/script>');})();</script>
-<script src="assets.js?v=202611111917"></script>
+document.write('<script src="sets/'+s+'.js?v=202611111924"><\/script>');})();</script>
+<script src="assets.js?v=202611111924"></script>
 <script>(function(){var G=[{"months": [], "file": "avatars_default.js"}],q=parseInt(new URLSearchParams(location.search).get('month')||'',10),mo=(q>=1&&q<=12)?q:new Date().getMonth()+1,f=null;
 G.forEach(function(g){if(g.months.indexOf(mo)>=0)f=f||g.file});if(!f)G.forEach(function(g){if(!g.months.length)f=f||g.file});f=f||G[0].file;
-document.write('<script src="'+f+'?v=202611111917"><\/script>');})();</script>
+document.write('<script src="'+f+'?v=202611111924"><\/script>');})();</script>
 
 <script>
 (function(){
@@ -896,7 +896,7 @@ function celebrate(el,gain){
   var gf=$('greenFlash');gf.classList.remove('on');void gf.offsetWidth;gf.classList.add('on');
   try{if(!current._ansAudio)voice.pause();cash.currentTime=0}catch(e){}safePlay(cash);
   var m=$('money');m.classList.remove('bump');void m.offsetWidth;m.classList.add('bump');
-  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/3;
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.4;
   var f=document.createElement('div');f.className='floatmoney';f.textContent='+'+fmtFull(gain);f.style.top=cy+'px';document.body.appendChild(f);
   var fw=f.offsetWidth*1.25/2+8;f.style.left=Math.max(fw,Math.min(window.innerWidth-fw,cx))+'px'; // keep the whole number on screen
   cashToRegister(cx,cy-24); // bills and coins start just above the green number
