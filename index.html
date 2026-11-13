@@ -480,12 +480,12 @@ table.rec td.now{color:var(--blue-d)}
 <div id="volBox"><button class="vb" data-v="0">🔇 0%</button><button class="vb" data-v="3">3%</button><button class="vb" data-v="5">5%</button><button class="vb" data-v="10">10%</button></div>
 
 <script>window.API_URL="https://script.google.com/macros/s/AKfycbxVDgAXj_zziPOcn5jrwMWP__LBwqI2ya7ZEIVOxAkBKo_ae8-rr_vsZ6S0ohC_ymZSRw/exec";
-(function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["B1L2-O1", "O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
-document.write('<script src="sets/'+s+'.js?v=202611121529"><\/script>');})();</script>
-<script src="assets.js?v=202611121529"></script>
+(function(){var s=(new URLSearchParams(location.search).get('set')||'O4').toUpperCase();if(["B1L2-O1", "B1L2-O4", "O1", "O2", "O3", "O4", "O5", "O6"].indexOf(s)<0)s='O4';
+document.write('<script src="sets/'+s+'.js?v=202611121803"><\/script>');})();</script>
+<script src="assets.js?v=202611121803"></script>
 <script>(function(){var G=[{"months": [], "file": "avatars_default.js"}],q=parseInt(new URLSearchParams(location.search).get('month')||'',10),mo=(q>=1&&q<=12)?q:new Date().getMonth()+1,f=null;
 G.forEach(function(g){if(g.months.indexOf(mo)>=0)f=f||g.file});if(!f)G.forEach(function(g){if(!g.months.length)f=f||g.file});f=f||G[0].file;
-document.write('<script src="'+f+'?v=202611121529"><\/script>');})();</script>
+document.write('<script src="'+f+'?v=202611121803"><\/script>');})();</script>
 
 <script>
 (function(){
@@ -808,7 +808,9 @@ function tick(){
   var ps=INC[st.inc]&&INC[st.inc][0]?'<span class="ps">+'+fmt(INC[st.inc][0])+'/s</span>':'',mt=fmtFull(st.money);
   ['money','money2'].forEach(function(id){$(id).innerHTML=mt+ps;moneySize($(id),mt)});$('streak').textContent='🔥 '+st.streak;
 }
-var NUM='一二三四五';
+var CN='一二三四五六七八九十', NUM=window.SET&&SET.nums||'一二三四五'; // SET.nums：這一課的數字答案（第二課是 六七八九十）
+function numVal(c){return CN.indexOf(c)+1}
+function brk(vis){var b=document.createElement('div');b.style.flexBasis='100%';b.style.height='0';vis.appendChild(b)}
 function next(){
   if(st.left<=0)return;
   if(!queue.length){var q=shuffle(SET.items);if(current&&q.length>1&&q[0]===current)q.push(q.shift());queue=q}
@@ -820,12 +822,12 @@ function next(){
     // answer is a number 一~五; the picture shows what to count (or which number)
     var n;
     if(current.kind==='count'){
-      var ns=current.counts||[1,2,3,4,5];n=ns[Math.floor(Math.random()*ns.length)];
-      for(var i=0;i<n;i++)vis.appendChild(pic(current.img));}
-    else if(current.kind==='num'){n=1+Math.floor(Math.random()*5);var big=pic(current.imgs[n]);big.className='numpic';vis.appendChild(big);}
+      var ns=current.counts||NUM.split('').map(numVal);n=ns[Math.floor(Math.random()*ns.length)];
+      for(var i=0;i<n;i++){if(n>5&&i===5)brk(vis);vis.appendChild(pic(current.img));}}
+    else if(current.kind==='num'){n=numVal(NUM.charAt(Math.floor(Math.random()*NUM.length)));var big=pic(current.imgs[n]);big.className='numpic';vis.appendChild(big);}
     else{n=current.ans;drawMath(vis,current);}
     if(current.ansAudio&&current.ansAudio[n])current._ansAudio=current.ansAudio[n];
-    vis.classList.add('on');current._ans=NUM[n-1];
+    vis.classList.add('on');current._ans=CN[n-1];
     var wrongs=shuffle(NUM.split('').filter(function(c){return c!==current._ans})).slice(0,3);
     opts=shuffle(wrongs.map(function(c){return {text:c,correct:false}}).concat([{text:current._ans,correct:true}]));
   }else{
@@ -838,8 +840,8 @@ function next(){
 }
 function pic(src){var im=document.createElement('img');im.src=src;im.alt='';return im}
 function drawMath(vis,m){ // e.g. 🍎 + 🍎🍎🍎  or  🍎🍎🍎🍎🍎 with 3 crossed out
-  if(m.op==='+'){for(var i=0;i<m.a;i++)vis.appendChild(pic(m.img));var o=document.createElement('span');o.className='op';o.textContent='+';vis.appendChild(o);for(i=0;i<m.b;i++)vis.appendChild(pic(m.img));}
-  else{for(var j=0;j<m.a;j++){var w=document.createElement('span');w.appendChild(pic(m.img));if(j>=m.a-m.b)w.className='gone';vis.appendChild(w)}}
+  if(m.op==='+'){for(var i=0;i<m.a;i++)vis.appendChild(pic(m.img));if(m.a+m.b>8)brk(vis);var o=document.createElement('span');o.className='op';o.textContent='+';vis.appendChild(o);for(i=0;i<m.b;i++)vis.appendChild(pic(m.img));}
+  else{for(var j=0;j<m.a;j++){if(m.a>5&&j===5)brk(vis);var w=document.createElement('span');w.appendChild(pic(m.img));if(j>=m.a-m.b)w.className='gone';vis.appendChild(w)}}
 }
 function answerFace(){return current._ans?{text:current._ans}:current}
 // which script each child reads: 'T' = 繁體, 'S' = 简体
