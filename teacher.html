@@ -2344,7 +2344,7 @@ var qrcode = function() {
 }));
 </script>
 <script>
-var DATA={"titles": {"O1": "MZ B1 L1 · O1 動物和動作", "O2": "MZ B1 L1 · O2 數字用法", "O3": "MZ B1 L1 · O3 數一數", "O4": "MZ B1 L1 · O4 一到五", "O5": "MZ B1 L1 · O5 加加減減", "O6": "MZ B1 L1 · O6 課文"}, "books": [{"name": "美洲華語 第一冊", "lessons": [{"name": "第一課", "sets": ["O1", "O2", "O3", "O4", "O5", "O6"]}]}]},TITLES=DATA.titles,BOOKS=DATA.books;
+var DATA={"titles": {"B1L2-O1": "MZ B1 L2 · O1 水果", "O1": "MZ B1 L1 · O1 動物和動作", "O2": "MZ B1 L1 · O2 數字用法", "O3": "MZ B1 L1 · O3 數一數", "O4": "MZ B1 L1 · O4 一到五", "O5": "MZ B1 L1 · O5 加加減減", "O6": "MZ B1 L1 · O6 課文"}, "books": [{"name": "美洲華語 第一冊", "lessons": [{"name": "第一課", "sets": ["O1", "O2", "O3", "O4", "O5", "O6"]}, {"name": "第二課", "sets": ["B1L2-O1"]}]}]},TITLES=DATA.titles,BOOKS=DATA.books;
 var sel=document.getElementById('set'),bookSel=document.getElementById('book'),lesSel=document.getElementById('lesson'),min=0;
 function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function opts(el,list){el.innerHTML='';list.forEach(function(x){var o=document.createElement('option');o.value=x[0];o.textContent=x[1];el.appendChild(o)})}
